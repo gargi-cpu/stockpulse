@@ -1,45 +1,51 @@
 # StockPulse 📈 – Real-Time NSE Stock Dashboard
 
-**A full-stack cloud-native application** that solves the common problem of **outdated or dummy stock data** in most portfolio projects.  
-StockPulse fetches **fresh NSE (India) stock data** using a public API and serves it through a professional backend.
+**Full-stack cloud-native stock dashboard** built from scratch.
 
-**Backend – 100% Complete** ✅  
-**Frontend – Actively in Progress** ⏳
+**Unique Value**: Unlike most portfolio projects that use hard-coded or old 2023 dummy data, StockPulse fetches **real NSE (India) stock data** from a public API – making it look **fancy, professional, and production-like**.
 
-## 🎯 Problem I'm Solving
-Most student/stock projects use hard-coded or 2023 snapshot data.  
-Recruiters see the same dummy "AAPL $150" everywhere.
+**Backend – 100% Complete & Working** ✅  
+**Frontend – Actively Building (Work in Progress)** ⏳
 
-**StockPulse is different** – it delivers **real, current NSE stock information**:
-- Symbol, company name, market cap, current price, change, % change
-- Data updated from live public endpoint
+## What Makes This Project Stand Out
+- No dummy data like "AAPL $150"
+- Real stock information: symbol, company name, market cap, current price, change, % change
+- Clean, enterprise-grade backend architecture
+- Looks **fancy and modern** to recruiters
 
-This shows real-world API integration, error resilience, and production thinking.
-
-## 🏗️ Professional Backend Architecture
-Clean layered Spring Boot design (enterprise standard):
-
+## Clean Backend Architecture
 com.gargi.stockpulse
-├── controller  ← REST endpoints
+├── controller  ← /api/stocks endpoint
 ├── service     ← Business logic
-├── client      ← Real API calls
+├── client      ← Calls real stock API
 ├── dto         ← Modern Java records
 └── config      ← CORS, RestTemplate, Actuator
 
 
 - Spring Boot 3.5.9 + Java 17
-- Real API integration
-- Actuator health checks
+- Real API integration (fresh data)
+- Spring Boot Actuator (health checks)
 - External configuration
 - CORS enabled
-- Stateless design
+- Stateless & Kubernetes-ready
 
-## Live Backend
+## Live Backend Demo
 Run:
 ```bash
 cd backend
 ./mvnw spring-boot:run
-
-
-
+Visit: http://localhost:8080/api/stocks
+Real response example:
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "symbol": "RELIANCE",
+      "name": "Reliance Industries Limited",
+      "currentPrice": "₹3123.45",
+      "change": "+45.30",
+      "percentChange": "+1.47%"
+    }
+  ]
+}
 
