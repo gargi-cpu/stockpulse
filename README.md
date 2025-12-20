@@ -29,9 +29,11 @@ com.gargi.stockpulse
 - CORS enabled
 - Stateless & Kubernetes-ready
 
-## Live Backend Demo
+## 🚀 Live Backend Demo
+
 Run:
-```bash
+
+``
 cd backend
 ./mvnw spring-boot:run
 Visit: http://localhost:8080/api/stocks
@@ -48,4 +50,61 @@ Real response example:
     }
   ]
 }
+``
 
+## 🎨 Frontend Development (Work in Progress 🚧)
+
+The frontend of **StockPulse** is actively being developed to present real NSE stock data in a clean, intuitive, and recruiter-friendly dashboard.
+
+Unlike typical student projects that focus only on UI design, the frontend is being built with a **backend-first and API-driven approach**, mirroring how real-world SaaS dashboards are engineered.
+
+### 🎯 Frontend Goals
+
+- Consume live stock data **only from the StockPulse backend**
+- Present complex market data in a **clear and readable format**
+- Focus on usability, clarity, and data understanding rather than flashy animations
+- Keep the frontend lightweight, stateless, and scalable
+
+### 🧩 Planned Frontend Features
+
+- 📊 **Live Stock Table**
+  - Displays real NSE stocks fetched from backend APIs
+  - Columns include symbol, company name, current price, change, and % change
+
+- 🔍 **Search & Filter**
+  - Search stocks by symbol or company name
+  - Client-side filtering for fast user experience
+
+- 🎨 **Visual Market Indicators**
+  - Green indicators for positive price movement
+  - Red indicators for negative price movement
+  - Clear formatting to quickly understand market trends
+
+- 🔗 **API-First Integration**
+  - Frontend never calls external stock APIs directly
+  - All data flows through the backend microservice
+  - Enables future features like caching, auth, and rate limiting
+
+### 🧠 Engineering Mindset
+
+The frontend is intentionally being built **incrementally**, following real engineering practices:
+- Stable backend first
+- Clear API contracts
+- Progressive UI enhancement
+- Easy future extension (charts, alerts, user preferences)
+
+This approach demonstrates **full-stack thinking**, not just UI implementation.
+
+### 🔮 Upcoming Enhancements
+
+- 📈 Interactive price charts
+- ⚡ Optimized data loading
+- 📱 Responsive layout for different screen sizes
+- ☁️ Production deployment readiness
+
+> The frontend is a work in progress by design — showcasing how features evolve in real software projects rather than appearing as a one-time static UI.
+
+
+
+
+  
