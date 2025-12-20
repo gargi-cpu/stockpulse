@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "stock.api.base-url",
+      "type": "java.lang.String",
+      "description": "Base URL for the external stock API (e.g., freeapi.app stocks endpoint)"
+    },
+    {
+      "name": "stock",
+      "type": "java.lang.String",
+      "description": "Placeholder group for stock-related configuration (not used directly)"
+    }
+  ]
+}
