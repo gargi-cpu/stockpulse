@@ -33,7 +33,7 @@ com.gargi.stockpulse
 
 Run:
 
-``
+``bash
 cd backend
 ./mvnw spring-boot:run
 Visit: http://localhost:8080/api/stocks
