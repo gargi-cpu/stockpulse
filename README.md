@@ -32,12 +32,14 @@ com.gargi.stockpulse
 ## 🚀 Live Backend Demo
 
 Run:
+## 🚀 Live Backend Demo
 
-``bash
+Run:
+
+```bash
 cd backend
 ./mvnw spring-boot:run
-Visit: http://localhost:8080/api/stocks
-Real response example:
+
 {
   "statusCode": 200,
   "data": [
@@ -50,7 +52,8 @@ Real response example:
     }
   ]
 }
-``
+```
+
 
 ## 🎨 Frontend Development (Work in Progress 🚧)
 
