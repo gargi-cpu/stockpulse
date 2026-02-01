@@ -1,0 +1,85 @@
+.stock-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+}
+
+.stock-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.stock-symbol {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.stock-change {
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.stock-change.positive {
+  background: #d4edda;
+  color: #28a745;
+}
+
+.stock-change.negative {
+  background: #f8d7da;
+  color: #dc3545;
+}
+
+.stock-name {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stock-price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.stock-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.stock-detail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.detail-label {
+  color: #999;
+}
+
+.detail-value {
+  color: #333;
+  font-weight: 500;
+}
