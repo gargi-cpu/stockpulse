@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -9,6 +10,9 @@ const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
+const ALPACA_API_KEY = process.env.ALPACA_API_KEY;
+const ALPACA_API_SECRET = process.env.ALPACA_API_SECRET;
+const ALPACA_DATA_BASE_URL = process.env.ALPACA_DATA_BASE_URL || 'https://data.alpaca.markets';
 
 if (!MONGODB_URI) {
   console.error('Missing MONGODB_URI environment variable.');
@@ -92,6 +96,30 @@ app.get('/auth/me', authenticateToken, async (req, res) => {
     return res.json({ user: { email: user.email, createdAt: user.createdAt } });
   } catch (err) {
     return res.status(500).json({ message: 'server error' });
+  }
+});
+
+app.get('/api/alpaca/bars/:symbol', authenticateToken, async (req, res) => {
+  const { symbol } = req.params;
+  if (!ALPACA_API_KEY || !ALPACA_API_SECRET) {
+    return res.status(500).json({ message: 'Alpaca credentials missing' });
+  }
+
+  try {
+    const url = `${ALPACA_DATA_BASE_URL}/v2/stocks/${symbol}/bars?timeframe=1Day&limit=30`;
+    const alpacaRes = await fetch(url, {
+      headers: {
+        'APCA-API-KEY-ID': ALPACA_API_KEY,
+        'APCA-API-SECRET-KEY': ALPACA_API_SECRET
+      }
+    });
+    if (!alpacaRes.ok) {
+      return res.status(502).json({ message: 'Alpaca data fetch failed' });
+    }
+    const payload = await alpacaRes.json();
+    return res.json({ bars: payload?.bars || [] });
+  } catch (err) {
+    return res.status(500).json({ message: 'Server error' });
   }
 });
 
