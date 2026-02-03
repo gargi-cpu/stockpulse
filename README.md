@@ -1,113 +1,78 @@
-# StockPulse 📈 – Real-Time NSE Stock Dashboard
+﻿# StockPulse
 
-**Full-stack cloud-native stock dashboard** built from scratch.
+Full-stack stock dashboard with a Spring Boot backend and a Vite + React frontend.
 
-**Unique Value**: Unlike most portfolio projects that use hard-coded or old 2023 dummy data, StockPulse fetches **real NSE (India) stock data** from a public API – making it look **fancy, professional, and production-like**.
+## Stack
+- Backend: Spring Boot 3.x, Java 17+
+- Frontend: Vite + React
+- Data source: https://api.freeapi.app/api/v1/public/stocks (via backend)
 
-**Backend – 100% Complete & Working** ✅  
-**Frontend – Actively Building (Work in Progress)** ⏳
+## Local Development
 
-## What Makes This Project Stand Out
-- No dummy data like "AAPL $150"
-- Real stock information: symbol, company name, market cap, current price, change, % change
-- Clean, enterprise-grade backend architecture
-- Looks **fancy and modern** to recruiters
-
-## Clean Backend Architecture
-com.gargi.stockpulse
-├── controller  ← /api/stocks endpoint
-├── service     ← Business logic
-├── client      ← Calls real stock API
-├── dto         ← Modern Java records
-└── config      ← CORS, RestTemplate, Actuator
-
-
-- Spring Boot 3.5.9 + Java 17
-- Real API integration (fresh data)
-- Spring Boot Actuator (health checks)
-- External configuration
-- CORS enabled
-- Stateless & Kubernetes-ready
-
-## 🚀 Live Backend Demo
-
-Run:
-## 🚀 Live Backend Demo
-
-Run:
-
+### Backend
 ```bash
 cd backend
 ./mvnw spring-boot:run
-
-{
-  "statusCode": 200,
-  "data": [
-    {
-      "symbol": "RELIANCE",
-      "name": "Reliance Industries Limited",
-      "currentPrice": "₹3123.45",
-      "change": "+45.30",
-      "percentChange": "+1.47%"
-    }
-  ]
-}
 ```
 
+Health check:
+```
+GET http://localhost:8080/api/health
+```
 
-## 🎨 Frontend Development (Work in Progress 🚧)
+Stocks endpoint:
+```
+GET http://localhost:8080/api/stocks
+```
 
-The frontend of **StockPulse** is actively being developed to present real NSE stock data in a clean, intuitive, and recruiter-friendly dashboard.
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Unlike typical student projects that focus only on UI design, the frontend is being built with a **backend-first and API-driven approach**, mirroring how real-world SaaS dashboards are engineered.
+Set the API base URL in `.env` (frontend root):
+```
+VITE_API_BASE_URL=http://localhost:8080/api
+```
 
-### 🎯 Frontend Goals
+## API Contract (Backend)
+- `GET /api/health` → plain text health message
+- `GET /api/stocks` → JSON payload from `freeapi.app` (proxied by backend)
 
-- Consume live stock data **only from the StockPulse backend**
-- Present complex market data in a **clear and readable format**
-- Focus on usability, clarity, and data understanding rather than flashy animations
-- Keep the frontend lightweight, stateless, and scalable
+## Deployment (Backend)
 
-### 🧩 Planned Frontend Features
+### Render
+1. Create a new Web Service from this repo.
+2. Root directory: `backend`
+3. Build command:
+   ```
+   ./mvnw -q -DskipTests package
+   ```
+4. Start command:
+   ```
+   java -jar target/*.jar
+   ```
+5. Environment variables:
+   - `PORT` (Render sets this automatically)
+   - `CORS_ALLOWED_ORIGINS` (set to your frontend URL)
 
-- 📊 **Live Stock Table**
-  - Displays real NSE stocks fetched from backend APIs
-  - Columns include symbol, company name, current price, change, and % change
+### Railway
+1. Create a new project from this repo.
+2. Root directory: `backend`
+3. Build command:
+   ```
+   ./mvnw -q -DskipTests package
+   ```
+4. Start command:
+   ```
+   java -jar target/*.jar
+   ```
+5. Environment variables:
+   - `PORT` (Railway sets this automatically)
+   - `CORS_ALLOWED_ORIGINS` (set to your frontend URL)
 
-- 🔍 **Search & Filter**
-  - Search stocks by symbol or company name
-  - Client-side filtering for fast user experience
-
-- 🎨 **Visual Market Indicators**
-  - Green indicators for positive price movement
-  - Red indicators for negative price movement
-  - Clear formatting to quickly understand market trends
-
-- 🔗 **API-First Integration**
-  - Frontend never calls external stock APIs directly
-  - All data flows through the backend microservice
-  - Enables future features like caching, auth, and rate limiting
-
-### 🧠 Engineering Mindset
-
-The frontend is intentionally being built **incrementally**, following real engineering practices:
-- Stable backend first
-- Clear API contracts
-- Progressive UI enhancement
-- Easy future extension (charts, alerts, user preferences)
-
-This approach demonstrates **full-stack thinking**, not just UI implementation.
-
-### 🔮 Upcoming Enhancements
-
-- 📈 Interactive price charts
-- ⚡ Optimized data loading
-- 📱 Responsive layout for different screen sizes
-- ☁️ Production deployment readiness
-
-> The frontend is a work in progress by design — showcasing how features evolve in real software projects rather than appearing as a one-time static UI.
-
-
-
-
-  
+## Notes
+- The backend proxies the public API and should be deployed independently.
+- The frontend should use `VITE_API_BASE_URL` to target the backend.
