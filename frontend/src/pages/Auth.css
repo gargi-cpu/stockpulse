@@ -36,6 +36,23 @@
   font-size: 13px;
   font-weight: 600;
 }
+
+.auth-user-badge {
+  margin: 8px 0 12px;
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef0ff;
+  color: #3b36a8;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.auth-toast {
+  background: #f0f6ff;
+  color: #1d4ed8;
+  border: 1px solid rgba(29, 78, 216, 0.2);
+}
 .auth-label {
   display: block;
   text-align: left;

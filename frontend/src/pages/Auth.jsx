@@ -10,6 +10,7 @@ function Auth() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState('checking');
   const [toast, setToast] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState(null);
 
   React.useEffect(() => {
     let isActive = true;
@@ -24,6 +25,17 @@ function Auth() {
     return () => {
       isActive = false;
     };
+  }, []);
+
+  React.useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('user'));
+      if (stored && stored.email) {
+        setCurrentUser(stored);
+      }
+    } catch {
+      setCurrentUser(null);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -62,6 +74,9 @@ function Auth() {
       <div className="auth-card">
         <h1>Welcome to StockPulse</h1>
         <p>Log in to continue or create a new account.</p>
+        {currentUser?.email && (
+          <div className="auth-user-badge">Logged in as {currentUser.email}</div>
+        )}
         {toast && <div className="auth-toast">{toast}</div>}
         <label className="auth-label" htmlFor="email">
           Email
