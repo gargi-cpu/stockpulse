@@ -20,6 +20,17 @@
   font-weight: 800;
 }
 
+.home-user-badge {
+  display: inline-block;
+  margin: 0 auto 1rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
 .gradient-text {
   background: linear-gradient(to right, #ffd89b, #19547b);
   -webkit-background-clip: text;
