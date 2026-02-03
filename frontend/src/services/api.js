@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// Your live backend API
-const API_BASE_URL = 'https://stockpulse-pxw3.onrender.com/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -12,57 +11,73 @@ const api = axios.create({
 });
 
 // Stock API endpoints
+const parseNumberFromText = (value) => {
+  if (value === null || value === undefined) return null;
+  const text = String(value).replace(/,/g, '');
+  const match = text.match(/-?\d+(\.\d+)?/);
+  if (!match) return null;
+  const num = Number(match[0]);
+  return Number.isFinite(num) ? num : null;
+};
+
+const normalizeStock = (item) => {
+  const currentPrice = parseNumberFromText(item?.currentPrice);
+  const marketCap = parseNumberFromText(item?.marketCap);
+  return {
+    id: item?.symbol ?? '',
+    symbol: item?.symbol ?? '',
+    name: item?.name ?? '',
+    price: currentPrice,
+    marketCap,
+    volume: null,
+    change: null,
+    percentChange: null,
+    raw: item,
+  };
+};
+
+const normalizeStocksResponse = (payload) => {
+  const items = payload?.data?.items;
+  if (!Array.isArray(items)) return [];
+  return items.map(normalizeStock);
+};
+
 export const stockAPI = {
   // Get all stocks
   getAllStocks: async () => {
     try {
       const response = await api.get('/stocks');
-      return response.data;
+      return normalizeStocksResponse(response.data);
     } catch (error) {
       console.error('Error fetching stocks:', error);
       throw error;
     }
   },
 
-  // Search stocks by symbol
+  // Search stocks by symbol (client-side)
   searchStocks: async (symbol) => {
-    try {
-      const response = await api.get(`/stocks/search`, {
-        params: { symbol }
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error searching stocks:', error);
-      throw error;
-    }
+    const all = await stockAPI.getAllStocks();
+    const query = symbol?.trim()?.toUpperCase();
+    if (!query) return all;
+    return all.filter((stock) => stock.symbol === query);
   },
 
-  // Get trending stocks
+  // Get trending stocks (client-side for now)
   getTrendingStocks: async () => {
-    try {
-      const response = await api.get('/stocks/trending');
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching trending stocks:', error);
-      throw error;
-    }
+    const all = await stockAPI.getAllStocks();
+    return all.slice(0, 10);
   },
 
-  // Get stock by ID
+  // Get stock by ID (client-side)
   getStockById: async (id) => {
-    try {
-      const response = await api.get(`/stocks/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching stock details:', error);
-      throw error;
-    }
+    const all = await stockAPI.getAllStocks();
+    return all.find((stock) => stock.id === id) || null;
   },
 
   // Health check
   healthCheck: async () => {
     try {
-      const response = await axios.get('https://stockpulse-pxw3.onrender.com/actuator/health');
+      const response = await api.get('/health');
       return response.data;
     } catch (error) {
       console.error('Health check failed:', error);
