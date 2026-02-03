@@ -1,8 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem('user'));
+  } catch {
+    user = null;
+  }
+  const userEmail = user && user.email ? user.email : null;
+
+  const handleLogout = () => {
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -11,17 +26,25 @@ const Navbar = () => {
           <span className="logo-text">StockPulse</span>
         </Link>
         
-        <ul className="navbar-menu">
-          <li className="navbar-item">
-            <Link to="/" className="navbar-link">Home</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/stocks" className="navbar-link">All Stocks</Link>
-          </li>
-          <li className="navbar-item">
-            <Link to="/trending" className="navbar-link">Trending</Link>
-          </li>
-        </ul>
+        <div className="navbar-actions">
+          <ul className="navbar-menu">
+            <li className="navbar-item">
+              <Link to="/" className="navbar-link">Home</Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/stocks" className="navbar-link">All Stocks</Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/trending" className="navbar-link">Trending</Link>
+            </li>
+          </ul>
+          {userEmail && (
+            <span className="navbar-user">Hi, {userEmail}</span>
+          )}
+          <button className="navbar-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   );

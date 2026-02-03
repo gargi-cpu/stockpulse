@@ -57,6 +57,23 @@
   font-size: 13px;
 }
 
+.auth-status {
+  margin: 6px 0 16px;
+  font-size: 13px;
+}
+
+.auth-status-checking {
+  color: #7a8398;
+}
+
+.auth-status-online {
+  color: #1a7f49;
+}
+
+.auth-status-offline {
+  color: #b42318;
+}
+
 .auth-actions {
   display: flex;
   gap: 12px;

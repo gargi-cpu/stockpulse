@@ -46,6 +46,12 @@
   padding: 0;
 }
 
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .navbar-item {
   margin: 0;
 }
@@ -64,6 +70,22 @@
   transform: translateY(-2px);
 }
 
+.navbar-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
@@ -73,4 +95,20 @@
   .navbar-menu {
     gap: 1rem;
   }
+
+  .navbar-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-button {
+    width: 100%;
+    max-width: 240px;
+  }
+}
+.navbar-user {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
 }

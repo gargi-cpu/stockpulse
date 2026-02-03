@@ -16,3 +16,11 @@ export async function loginWithEmail(email) {
 
   return response.json();
 }
+
+export async function getAuthStatus() {
+  const response = await fetch(`${AUTH_BASE_URL}/auth/status`);
+  if (!response.ok) {
+    throw new Error('Auth status unavailable');
+  }
+  return response.json();
+}

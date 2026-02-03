@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginWithEmail } from '../services/auth';
+import { getAuthStatus, loginWithEmail } from '../services/auth';
 import './Auth.css';
 
 function Auth() {
@@ -8,6 +8,22 @@ function Auth() {
   const [email, setEmail] = React.useState('');
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
+  const [status, setStatus] = React.useState('checking');
+
+  React.useEffect(() => {
+    let isActive = true;
+    getAuthStatus()
+      .then(() => {
+        if (isActive) setStatus('online');
+      })
+      .catch(() => {
+        if (isActive) setStatus('offline');
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   const handleAuth = async () => {
     setError('');
@@ -18,8 +34,10 @@ function Auth() {
 
     try {
       setIsLoading(true);
-      await loginWithEmail(email.trim());
+      const result = await loginWithEmail(email.trim());
+      const user = result && result.user ? result.user : result;
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('user', JSON.stringify(user));
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
@@ -45,6 +63,9 @@ function Auth() {
           onChange={(e) => setEmail(e.target.value)}
         />
         {error && <p className="auth-error">{error}</p>}
+        <p className={`auth-status auth-status-${status}`}>
+          Auth service: {status}
+        </p>
         <div className="auth-actions">
           <button className="primary" onClick={handleAuth} disabled={isLoading}>
             {isLoading ? 'Working...' : 'Login'}
