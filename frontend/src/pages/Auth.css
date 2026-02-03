@@ -46,12 +46,25 @@
   color: #3b36a8;
   font-size: 12px;
   font-weight: 700;
+  animation: fadeInUp 220ms ease-out;
 }
 
 .auth-toast {
   background: #f0f6ff;
   color: #1d4ed8;
   border: 1px solid rgba(29, 78, 216, 0.2);
+  animation: fadeInUp 220ms ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .auth-label {
   display: block;

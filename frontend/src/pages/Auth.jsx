@@ -61,6 +61,7 @@ function Auth() {
       const user = result && result.user ? result.user : result;
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('user', JSON.stringify(user));
+      setCurrentUser(user);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
