@@ -16,6 +16,22 @@ const Home = () => {
     }
   }, []);
 
+  React.useEffect(() => {
+    const handleStorage = (event) => {
+      if (event.key === 'user') {
+        try {
+          const nextUser = event.newValue ? JSON.parse(event.newValue) : null;
+          setCurrentUser(nextUser && nextUser.email ? nextUser : null);
+        } catch {
+          setCurrentUser(null);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
   return (
     <div className="home">
       <div className="hero-section">
