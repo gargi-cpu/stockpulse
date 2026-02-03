@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuthStatus, loginWithEmail } from '../services/auth';
+import useAuthUser from '../hooks/useAuthUser';
 import './Auth.css';
 
 function Auth() {
@@ -10,7 +11,7 @@ function Auth() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState('checking');
   const [toast, setToast] = React.useState('');
-  const [currentUser, setCurrentUser] = React.useState(null);
+  const currentUser = useAuthUser();
 
   React.useEffect(() => {
     let isActive = true;
@@ -25,17 +26,6 @@ function Auth() {
     return () => {
       isActive = false;
     };
-  }, []);
-
-  React.useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem('user'));
-      if (stored && stored.email) {
-        setCurrentUser(stored);
-      }
-    } catch {
-      setCurrentUser(null);
-    }
   }, []);
 
   React.useEffect(() => {
@@ -61,7 +51,6 @@ function Auth() {
       const user = result && result.user ? result.user : result;
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('user', JSON.stringify(user));
-      setCurrentUser(user);
       window.dispatchEvent(new Event('auth-change'));
       navigate('/');
     } catch (err) {

@@ -1,15 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import useAuthUser from '../hooks/useAuthUser';
 import './Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  let user = null;
-  try {
-    user = JSON.parse(localStorage.getItem('user'));
-  } catch {
-    user = null;
-  }
+  const user = useAuthUser();
   const userEmail = user && user.email ? user.email : null;
 
   const handleLogout = () => {

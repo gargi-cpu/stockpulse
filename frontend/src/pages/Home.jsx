@@ -1,50 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useAuthUser from '../hooks/useAuthUser';
 import './Home.css';
 
 const Home = () => {
-  const [currentUser, setCurrentUser] = React.useState(null);
-
-  React.useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem('user'));
-      if (stored && stored.email) {
-        setCurrentUser(stored);
-      }
-    } catch {
-      setCurrentUser(null);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    const handleStorage = (event) => {
-      if (event.key === 'user') {
-        try {
-          const nextUser = event.newValue ? JSON.parse(event.newValue) : null;
-          setCurrentUser(nextUser && nextUser.email ? nextUser : null);
-        } catch {
-          setCurrentUser(null);
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
-
-  React.useEffect(() => {
-    const handleAuthChange = () => {
-      try {
-        const stored = JSON.parse(localStorage.getItem('user'));
-        setCurrentUser(stored && stored.email ? stored : null);
-      } catch {
-        setCurrentUser(null);
-      }
-    };
-
-    window.addEventListener('auth-change', handleAuthChange);
-    return () => window.removeEventListener('auth-change', handleAuthChange);
-  }, []);
+  const currentUser = useAuthUser();
 
   return (
     <div className="home">
