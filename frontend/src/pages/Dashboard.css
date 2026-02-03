@@ -106,3 +106,7 @@
   padding-left: 16px;
   color: #9ca3af;
 }
+
+.news-list li {
+  margin-bottom: 8px;
+}
