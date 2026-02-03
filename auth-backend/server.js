@@ -1,14 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const User = require('./models/User');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
+const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 
 if (!MONGODB_URI) {
   console.error('Missing MONGODB_URI environment variable.');
+  process.exit(1);
+}
+if (!JWT_SECRET) {
+  console.error('Missing JWT_SECRET environment variable.');
   process.exit(1);
 }
 
@@ -20,7 +27,7 @@ mongoose
     process.exit(1);
   });
 
-app.use(cors());
+app.use(cors({ origin: CORS_ORIGIN }));
 app.use(express.json());
 
 app.get('/health', (req, res) => {
@@ -41,13 +48,49 @@ app.post('/auth/login', async (req, res) => {
     if (user) {
       user.lastLogin = now;
       await user.save();
-      return res.json({ message: 'logged in', user });
+      const token = jwt.sign({ email: user.email, userId: user._id }, JWT_SECRET, {
+        expiresIn: '7d'
+      });
+      return res.json({
+        token,
+        user: { email: user.email, createdAt: user.createdAt }
+      });
     }
 
     user = await User.create({ email, createdAt: now, lastLogin: now });
-    return res.status(201).json({ message: 'user created', user });
+    const token = jwt.sign({ email: user.email, userId: user._id }, JWT_SECRET, {
+      expiresIn: '7d'
+    });
+    return res.status(201).json({
+      token,
+      user: { email: user.email, createdAt: user.createdAt }
+    });
   } catch (err) {
     console.error('Login error:', err);
+    return res.status(500).json({ message: 'server error' });
+  }
+});
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  if (!token) return res.status(401).json({ message: 'missing token' });
+
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    req.user = payload;
+    return next();
+  } catch (err) {
+    return res.status(401).json({ message: 'invalid token' });
+  }
+}
+
+app.get('/auth/me', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: 'user not found' });
+    return res.json({ user: { email: user.email, createdAt: user.createdAt } });
+  } catch (err) {
     return res.status(500).json({ message: 'server error' });
   }
 });
