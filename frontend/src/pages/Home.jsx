@@ -32,6 +32,20 @@ const Home = () => {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
+  React.useEffect(() => {
+    const handleAuthChange = () => {
+      try {
+        const stored = JSON.parse(localStorage.getItem('user'));
+        setCurrentUser(stored && stored.email ? stored : null);
+      } catch {
+        setCurrentUser(null);
+      }
+    };
+
+    window.addEventListener('auth-change', handleAuthChange);
+    return () => window.removeEventListener('auth-change', handleAuthChange);
+  }, []);
+
   return (
     <div className="home">
       <div className="hero-section">

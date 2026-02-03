@@ -62,6 +62,7 @@ function Auth() {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('user', JSON.stringify(user));
       setCurrentUser(user);
+      window.dispatchEvent(new Event('auth-change'));
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');

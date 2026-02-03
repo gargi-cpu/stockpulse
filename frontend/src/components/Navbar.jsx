@@ -16,6 +16,7 @@ const Navbar = () => {
     sessionStorage.setItem('logoutToast', 'You have been logged out.');
     localStorage.setItem('isLoggedIn', 'false');
     localStorage.removeItem('user');
+    window.dispatchEvent(new Event('auth-change'));
     navigate('/');
   };
 
