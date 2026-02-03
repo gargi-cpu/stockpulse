@@ -110,3 +110,12 @@
 .news-list li {
   margin-bottom: 8px;
 }
+
+.news-list a {
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.news-list a:hover {
+  color: #6c63ff;
+}

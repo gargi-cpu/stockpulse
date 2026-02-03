@@ -13,6 +13,11 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
 const ALPACA_API_KEY = process.env.ALPACA_API_KEY;
 const ALPACA_API_SECRET = process.env.ALPACA_API_SECRET;
 const ALPACA_DATA_BASE_URL = process.env.ALPACA_DATA_BASE_URL || 'https://data.alpaca.markets';
+const NEWS_API_KEY = process.env.NEWS_API_KEY;
+const NEWS_API_BASE_URL = process.env.NEWS_API_BASE_URL || 'https://newsapi.org/v2/everything';
+
+const newsCache = new Map();
+const NEWS_CACHE_TTL_MS = 1000 * 60 * 5;
 
 if (!MONGODB_URI) {
   console.error('Missing MONGODB_URI environment variable.');
@@ -119,6 +124,53 @@ app.get('/api/alpaca/bars/:symbol', authenticateToken, async (req, res) => {
     const payload = await alpacaRes.json();
     return res.json({ bars: payload?.bars || [] });
   } catch (err) {
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.get('/api/news', authenticateToken, async (req, res) => {
+  const symbolsParam = req.query.symbols || '';
+  const symbols = symbolsParam
+    .split(',')
+    .map((s) => s.trim().toUpperCase())
+    .filter(Boolean);
+
+  if (!symbols.length) {
+    return res.status(400).json({ message: 'symbols query param required' });
+  }
+
+  const cacheKey = symbols.join(',');
+  const cached = newsCache.get(cacheKey);
+  if (cached && Date.now() - cached.ts < NEWS_CACHE_TTL_MS) {
+    return res.json({ items: cached.items, source: cached.source });
+  }
+
+  if (!NEWS_API_KEY) {
+    const mockItems = symbols.slice(0, 5).map((sym) => ({
+      symbol: sym,
+      title: `${sym} moves on market sentiment`,
+      url: '#'
+    }));
+    newsCache.set(cacheKey, { ts: Date.now(), items: mockItems, source: 'mock' });
+    return res.json({ items: mockItems, source: 'mock' });
+  }
+
+  try {
+    const query = symbols.map((s) => `"${s}"`).join(' OR ');
+    const url = `${NEWS_API_BASE_URL}?q=${encodeURIComponent(query)}&pageSize=5&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
+    const newsRes = await fetch(url);
+    if (!newsRes.ok) {
+      return res.status(502).json({ message: 'News API fetch failed' });
+    }
+    const payload = await newsRes.json();
+    const items = (payload?.articles || []).slice(0, 5).map((a) => ({
+      symbol: symbols[0],
+      title: a.title,
+      url: a.url
+    }));
+    newsCache.set(cacheKey, { ts: Date.now(), items, source: 'api' });
+    return res.json({ items, source: 'api' });
+  } catch {
     return res.status(500).json({ message: 'Server error' });
   }
 });
