@@ -27,6 +27,36 @@
   color: #525a6b;
 }
 
+.auth-label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #212534;
+  margin-bottom: 6px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d7dbea;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+}
+
+.auth-error {
+  margin: 6px 0 12px;
+  color: #d04444;
+  font-size: 13px;
+}
+
 .auth-actions {
   display: flex;
   gap: 12px;
