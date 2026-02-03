@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import SplashScreen from './components/SplashScreen';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
@@ -10,6 +9,7 @@ import TrendingStocks from './pages/TrendingStocks';
 import StockDetails from './pages/StockDetails';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { getAuthMe } from './services/auth';
+import AppLayout from './layouts/AppLayout';
 import './App.css';
 
 function App() {
@@ -49,25 +49,48 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
           <Route
             path="/dashboard"
-            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <Dashboard />
+                </AppLayout>
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/stocks"
-            element={<ProtectedRoute><StockList /></ProtectedRoute>}
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <StockList />
+                </AppLayout>
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/trending"
-            element={<ProtectedRoute><TrendingStocks /></ProtectedRoute>}
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <TrendingStocks />
+                </AppLayout>
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/stock/:id"
-            element={<ProtectedRoute><StockDetails /></ProtectedRoute>}
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <StockDetails />
+                </AppLayout>
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </div>
