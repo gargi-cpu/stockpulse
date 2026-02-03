@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f6fb;
+  background: #0f1220;
 }
 
 .splash-screen * {
@@ -81,11 +81,24 @@
 }
 
 .splash-screen .text span {
-  color: #212534;
-  mix-blend-mode: difference;
+  color: transparent;
+  background-image:
+    radial-gradient(ellipse at 50% -20px, rgba(255, 255, 255, 0.9) 0 35%, rgba(255, 255, 255, 0) 62%),
+    conic-gradient(from -22deg at 50% -30px, rgba(255, 255, 255, 0.9) 0deg 44deg, rgba(255, 255, 255, 0) 44deg 360deg);
+  background-repeat: no-repeat;
+  background-size: 600px 400px;
+  background-position: 50% 0%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: spotlight 3s cubic-bezier(0.645, 0.045, 0.355, 1) infinite alternate;
 }
 
 @keyframes move {
   from { transform: rotate(35deg); }
   to { transform: rotate(-35deg); }
+}
+
+@keyframes spotlight {
+  from { background-position: 30% 0%; }
+  to { background-position: 70% 0%; }
 }
