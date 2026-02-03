@@ -9,6 +9,7 @@ function Auth() {
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState('checking');
+  const [toast, setToast] = React.useState('');
 
   React.useEffect(() => {
     let isActive = true;
@@ -23,6 +24,16 @@ function Auth() {
     return () => {
       isActive = false;
     };
+  }, []);
+
+  React.useEffect(() => {
+    const message = sessionStorage.getItem('logoutToast');
+    if (message) {
+      setToast(message);
+      sessionStorage.removeItem('logoutToast');
+      const timer = setTimeout(() => setToast(''), 2500);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const handleAuth = async () => {
@@ -51,6 +62,7 @@ function Auth() {
       <div className="auth-card">
         <h1>Welcome to StockPulse</h1>
         <p>Log in to continue or create a new account.</p>
+        {toast && <div className="auth-toast">{toast}</div>}
         <label className="auth-label" htmlFor="email">
           Email
         </label>

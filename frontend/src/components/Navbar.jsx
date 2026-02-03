@@ -13,8 +13,7 @@ const Navbar = () => {
   const userEmail = user && user.email ? user.email : null;
 
   const handleLogout = () => {
-    const confirmed = window.confirm('Log out of StockPulse?');
-    if (!confirmed) return;
+    sessionStorage.setItem('logoutToast', 'You have been logged out.');
     localStorage.setItem('isLoggedIn', 'false');
     localStorage.removeItem('user');
     navigate('/');

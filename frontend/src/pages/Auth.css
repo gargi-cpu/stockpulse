@@ -27,6 +27,15 @@
   color: #525a6b;
 }
 
+.auth-toast {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #e8f7ee;
+  color: #1a7f49;
+  font-size: 13px;
+  font-weight: 600;
+}
 .auth-label {
   display: block;
   text-align: left;
