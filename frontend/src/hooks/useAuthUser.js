@@ -33,11 +33,15 @@ export default function useAuthUser() {
       }
     };
 
+    const handleAuthChanged = () => handleAuthChange();
+
     window.addEventListener('storage', handleStorage);
     window.addEventListener('auth-change', handleAuthChange);
+    window.addEventListener('auth-changed', handleAuthChanged);
     return () => {
       window.removeEventListener('storage', handleStorage);
       window.removeEventListener('auth-change', handleAuthChange);
+      window.removeEventListener('auth-changed', handleAuthChanged);
     };
   }, []);
 

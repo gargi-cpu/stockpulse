@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAuthStatus, loginWithEmail } from '../services/auth';
+import { getAuthHealth, loginWithEmail } from '../services/auth';
 import useAuthUser from '../hooks/useAuthUser';
 import './Auth.css';
 
@@ -10,17 +10,24 @@ function Auth() {
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState('checking');
+  const [statusError, setStatusError] = React.useState('');
   const [toast, setToast] = React.useState('');
   const currentUser = useAuthUser();
 
   React.useEffect(() => {
     let isActive = true;
-    getAuthStatus()
+    getAuthHealth()
       .then(() => {
-        if (isActive) setStatus('online');
+        if (isActive) {
+          setStatus('online');
+          setStatusError('');
+        }
       })
-      .catch(() => {
-        if (isActive) setStatus('offline');
+      .catch((err) => {
+        if (isActive) {
+          setStatus('offline');
+          setStatusError(err.message || 'Auth service unavailable');
+        }
       });
 
     return () => {
@@ -51,7 +58,9 @@ function Auth() {
       const user = result && result.user ? result.user : result;
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', result.token);
       window.dispatchEvent(new Event('auth-change'));
+      window.dispatchEvent(new CustomEvent('auth-changed'));
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed.');
@@ -81,9 +90,9 @@ function Auth() {
           onChange={(e) => setEmail(e.target.value)}
         />
         {error && <p className="auth-error">{error}</p>}
-        <p className={`auth-status auth-status-${status}`}>
-          Auth service: {status}
-        </p>
+        {status === 'offline' && (
+          <p className="auth-error">{statusError}</p>
+        )}
         <div className="auth-actions">
           <button className="primary" onClick={handleAuth} disabled={isLoading}>
             {isLoading ? 'Working...' : 'Login'}

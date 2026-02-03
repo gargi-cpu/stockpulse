@@ -7,12 +7,30 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useAuthUser();
   const userEmail = user && user.email ? user.email : null;
+  const displayName = userEmail
+    ? userEmail.split('@')[0].replace(/\W+/g, ' ').trim()
+    : '';
+  const nameTitle = displayName
+    ? displayName.charAt(0).toUpperCase() + displayName.slice(1)
+    : '';
+  const initials = displayName
+    ? displayName
+        .split(' ')
+        .filter(Boolean)
+        .map((part) => part[0].toUpperCase())
+        .slice(0, 2)
+        .join('')
+    : userEmail
+      ? userEmail[0].toUpperCase()
+      : '';
 
   const handleLogout = () => {
     sessionStorage.setItem('logoutToast', 'You have been logged out.');
     localStorage.setItem('isLoggedIn', 'false');
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     window.dispatchEvent(new Event('auth-change'));
+    window.dispatchEvent(new CustomEvent('auth-changed'));
     navigate('/');
   };
 
@@ -37,7 +55,10 @@ const Navbar = () => {
             </li>
           </ul>
           {userEmail && (
-            <span className="navbar-user">Hi, {userEmail}</span>
+            <div className="navbar-user">
+              <span className="navbar-avatar">{initials}</span>
+              <span>Hi, {nameTitle || userEmail}</span>
+            </div>
           )}
           <button className="navbar-button" onClick={handleLogout}>
             Logout

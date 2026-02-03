@@ -8,6 +8,7 @@ import StockList from './pages/StockList';
 import TrendingStocks from './pages/TrendingStocks';
 import StockDetails from './pages/StockDetails';
 import useIsLoggedIn from './hooks/useIsLoggedIn';
+import { getAuthMe } from './services/auth';
 import './App.css';
 
 function App() {
@@ -19,6 +20,25 @@ function App() {
     }, 7000);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    getAuthMe(token)
+      .then((data) => {
+        if (data?.user) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('user', JSON.stringify(data.user));
+          window.dispatchEvent(new CustomEvent('auth-changed'));
+        }
+      })
+      .catch(() => {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        window.dispatchEvent(new CustomEvent('auth-changed'));
+      });
   }, []);
 
   const isLoggedIn = useIsLoggedIn();

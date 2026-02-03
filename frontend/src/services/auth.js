@@ -17,10 +17,20 @@ export async function loginWithEmail(email) {
   return response.json();
 }
 
-export async function getAuthStatus() {
-  const response = await fetch(`${AUTH_BASE_URL}/auth/status`);
+export async function getAuthHealth() {
+  const response = await fetch(`${AUTH_BASE_URL}/health`);
   if (!response.ok) {
-    throw new Error('Auth status unavailable');
+    throw new Error('Auth service unavailable');
+  }
+  return response.json();
+}
+
+export async function getAuthMe(token) {
+  const response = await fetch(`${AUTH_BASE_URL}/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!response.ok) {
+    throw new Error('Invalid token');
   }
   return response.json();
 }
