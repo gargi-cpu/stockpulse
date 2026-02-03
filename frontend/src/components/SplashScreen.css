@@ -83,14 +83,14 @@
 .splash-screen .text span {
   color: transparent;
   background-image:
-    radial-gradient(ellipse at 50% -20px, rgba(255, 255, 255, 0.9) 0 35%, rgba(255, 255, 255, 0) 62%),
-    conic-gradient(from -22deg at 50% -30px, rgba(255, 255, 255, 0.9) 0deg 44deg, rgba(255, 255, 255, 0) 44deg 360deg);
+    radial-gradient(ellipse at 50% -20px, rgba(255, 255, 255, 0.9) 0 45%, rgba(255, 255, 255, 0) 70%),
+    conic-gradient(from -30deg at 50% -30px, rgba(255, 255, 255, 0.9) 0deg 60deg, rgba(255, 255, 255, 0) 60deg 360deg);
   background-repeat: no-repeat;
-  background-size: 600px 400px;
+  background-size: 720px 460px;
   background-position: 50% 0%;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: spotlight 3s cubic-bezier(0.645, 0.045, 0.355, 1) infinite alternate;
+  animation: spotlight 5s cubic-bezier(0.645, 0.045, 0.355, 1) infinite alternate;
 }
 
 @keyframes move {
