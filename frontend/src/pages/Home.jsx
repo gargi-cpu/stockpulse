@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useAuthUser from '../hooks/useAuthUser';
 import './Home.css';
 
 const Home = () => {
-  const currentUser = useAuthUser();
-
   return (
     <div className="home">
       <div className="hero-section">
@@ -13,9 +10,6 @@ const Home = () => {
           <h1 className="hero-title">
             Welcome to <span className="gradient-text">StockPulse</span>
           </h1>
-          {currentUser?.email && (
-            <div className="home-user-badge">Logged in as {currentUser.email}</div>
-          )}
           <p className="hero-subtitle">
             Real-time stock market data and insights at your fingertips
           </p>
@@ -25,11 +19,8 @@ const Home = () => {
           </p>
           
           <div className="hero-buttons">
-            <Link to="/stocks" className="btn btn-primary">
-              View All Stocks
-            </Link>
-            <Link to="/trending" className="btn btn-secondary">
-              Trending Stocks
+            <Link to="/auth" className="btn btn-primary">
+              Get Started
             </Link>
           </div>
         </div>

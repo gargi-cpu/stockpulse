@@ -61,7 +61,7 @@ function Auth() {
       localStorage.setItem('token', result.token);
       window.dispatchEvent(new Event('auth-change'));
       window.dispatchEvent(new CustomEvent('auth-changed'));
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Login failed.');
     } finally {

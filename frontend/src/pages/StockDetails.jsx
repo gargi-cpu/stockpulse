@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { stockAPI } from '../services/api';
+import { alpacaAPI } from '../services/alpaca';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Loading from '../components/Loading';
 import './StockDetails.css';
 
 const StockDetails = () => {
   const { id } = useParams();
   const [stock, setStock] = useState(null);
+  const [bars, setBars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,7 +22,9 @@ const StockDetails = () => {
       setLoading(true);
       setError(null);
       const data = await stockAPI.getStockById(id);
+      const barsData = await alpacaAPI.getBars(id);
       setStock(data);
+      setBars(barsData);
     } catch (err) {
       setError('Failed to fetch stock details. Please try again.');
       console.error('Error:', err);
@@ -71,6 +76,20 @@ const StockDetails = () => {
             ${stock.price ? stock.price.toFixed(2) : 'N/A'}
           </div>
           <div className="price-label">Current Price</div>
+        </div>
+
+        <div className="stock-chart">
+          <h3>Price History (1D bars)</h3>
+          <div className="chart-wrap">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={bars}>
+                <XAxis dataKey="t" hide />
+                <YAxis hide />
+                <Tooltip />
+                <Line type="monotone" dataKey="c" stroke="#7c9cff" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         <div className="details-grid">

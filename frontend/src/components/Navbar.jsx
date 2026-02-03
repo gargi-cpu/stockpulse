@@ -47,12 +47,16 @@ const Navbar = () => {
             <li className="navbar-item">
               <Link to="/" className="navbar-link">Home</Link>
             </li>
-            <li className="navbar-item">
-              <Link to="/stocks" className="navbar-link">All Stocks</Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/trending" className="navbar-link">Trending</Link>
-            </li>
+            {userEmail && (
+              <>
+                <li className="navbar-item">
+                  <Link to="/dashboard" className="navbar-link">Dashboard</Link>
+                </li>
+                <li className="navbar-item">
+                  <Link to="/stocks" className="navbar-link">Stocks</Link>
+                </li>
+              </>
+            )}
           </ul>
           {userEmail && (
             <div className="navbar-user">
@@ -60,9 +64,11 @@ const Navbar = () => {
               <span>Hi, {nameTitle || userEmail}</span>
             </div>
           )}
-          <button className="navbar-button" onClick={handleLogout}>
-            Logout
-          </button>
+          {userEmail && (
+            <button className="navbar-button" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

@@ -4,10 +4,12 @@ import Navbar from './components/Navbar';
 import SplashScreen from './components/SplashScreen';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
+import Dashboard from './pages/Dashboard';
 import StockList from './pages/StockList';
 import TrendingStocks from './pages/TrendingStocks';
 import StockDetails from './pages/StockDetails';
 import ProtectedRoute from './routes/ProtectedRoute';
+import { getAuthMe } from './services/auth';
 import './App.css';
 
 function App() {
@@ -21,6 +23,25 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    getAuthMe(token)
+      .then((data) => {
+        if (data?.user) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('user', JSON.stringify(data.user));
+          window.dispatchEvent(new CustomEvent('auth-changed'));
+        }
+      })
+      .catch(() => {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        window.dispatchEvent(new CustomEvent('auth-changed'));
+      });
+  }, []);
+
   if (showSplash) {
     return <SplashScreen />;
   }
@@ -32,6 +53,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+          />
           <Route
             path="/stocks"
             element={<ProtectedRoute><StockList /></ProtectedRoute>}
