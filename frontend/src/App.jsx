@@ -7,6 +7,7 @@ import Auth from './pages/Auth';
 import StockList from './pages/StockList';
 import TrendingStocks from './pages/TrendingStocks';
 import StockDetails from './pages/StockDetails';
+import useIsLoggedIn from './hooks/useIsLoggedIn';
 import './App.css';
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isLoggedIn = useIsLoggedIn();
 
   if (showSplash) {
     return <SplashScreen />;
