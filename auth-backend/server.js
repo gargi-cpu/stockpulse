@@ -104,7 +104,7 @@ app.get('/auth/me', authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/api/alpaca/bars/:symbol', authenticateToken, async (req, res) => {
+app.get('/api/alpaca/bars/:symbol', async (req, res) => {
   const { symbol } = req.params;
   if (!ALPACA_API_KEY || !ALPACA_API_SECRET) {
     return res.status(500).json({ message: 'Alpaca credentials missing' });
@@ -128,7 +128,7 @@ app.get('/api/alpaca/bars/:symbol', authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/api/news', authenticateToken, async (req, res) => {
+app.get('/api/news', async (req, res) => {
   const symbolsParam = req.query.symbols || '';
   const symbols = symbolsParam
     .split(',')

@@ -3,10 +3,9 @@ const AUTH_BASE_URL =
 
 export const newsAPI = {
   getHeadlines: async (symbols) => {
-    const token = localStorage.getItem('token');
     const query = symbols.join(',');
     const response = await fetch(`${AUTH_BASE_URL}/api/news?symbols=${encodeURIComponent(query)}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'Content-Type': 'application/json' }
     });
     if (!response.ok) {
       throw new Error('Failed to load news');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { stockAPI } from '../services/api';
+import { alpacaAPI } from '../services/alpaca';
 import { alpacaAPI } from '../services/alpaca';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Loading from '../components/Loading';
@@ -21,9 +21,19 @@ const StockDetails = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await stockAPI.getStockById(id);
       const barsData = await alpacaAPI.getBars(id);
-      setStock(data);
+      const last = barsData?.[barsData.length - 1];
+      const prev = barsData?.[barsData.length - 2];
+      if (!last || !prev) throw new Error('No data');
+      setStock({
+        id,
+        symbol: id,
+        name: id,
+        price: last.c,
+        change: ((last.c - prev.c) / prev.c) * 100,
+        volume: last.v,
+        marketCap: null
+      });
       setBars(barsData);
     } catch (err) {
       setError('Failed to fetch stock details. Please try again.');

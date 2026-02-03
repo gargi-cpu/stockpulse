@@ -3,9 +3,8 @@ const AUTH_BASE_URL =
 
 export const alpacaAPI = {
   getBars: async (symbol) => {
-    const token = localStorage.getItem('token');
     const response = await fetch(`${AUTH_BASE_URL}/api/alpaca/bars/${symbol}`, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { 'Content-Type': 'application/json' }
     });
     if (!response.ok) {
       throw new Error('Failed to load market data');

@@ -1,6 +1,6 @@
 .dashboard {
-  background: #0b0f1a;
-  color: #e5e7eb;
+  background: #F8F9FA;
+  color: #1F2937;
   padding: 24px;
   min-height: 100vh;
 }
@@ -22,7 +22,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #161c2d;
+  background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,15 +56,15 @@
 }
 
 .card {
-  background: #161c2d;
-  border-radius: 14px;
+  background: #FFFFFF;
+  border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
 .index-title {
-  color: #9ca3af;
+  color: #6B7280;
   font-size: 12px;
 }
 
@@ -77,9 +77,9 @@
 .index-change.down { color: #ef4444; }
 
 .metric { font-size: 18px; font-weight: 700; }
-.metric.up { color: #22c55e; }
-.metric.down { color: #ef4444; }
-.muted { color: #9ca3af; }
+.metric.up { color: #22C55E; }
+.metric.down { color: #EF4444; }
+.muted { color: #6B7280; }
 
 .table .row {
   display: flex;
@@ -94,8 +94,8 @@
 }
 
 .chip {
-  background: #0e1323;
-  color: #e5e7eb;
+  background: #F3F4F6;
+  color: #1F2937;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
@@ -104,7 +104,7 @@
 .news-list {
   margin: 0;
   padding-left: 16px;
-  color: #9ca3af;
+  color: #6B7280;
 }
 
 .news-list li {
@@ -112,10 +112,10 @@
 }
 
 .news-list a {
-  color: #e5e7eb;
+  color: #1F2937;
   text-decoration: none;
 }
 
 .news-list a:hover {
-  color: #6c63ff;
+  color: #2563EB;
 }

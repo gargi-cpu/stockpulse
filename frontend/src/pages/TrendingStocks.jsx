@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { stockAPI } from '../services/api';
+import { alpacaAPI } from '../services/alpaca';
 import StockCard from '../components/StockCard';
 import Loading from '../components/Loading';
 import './TrendingStocks.css';
@@ -13,11 +13,25 @@ const TrendingStocks = () => {
     fetchTrendingStocks();
   }, []);
 
+  const SYMBOLS = ['AAPL', 'MSFT', 'TSLA', 'NVDA', 'GOOGL', 'AMZN', 'META', 'JPM'];
+
   const fetchTrendingStocks = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await stockAPI.getTrendingStocks();
+      const data = await Promise.all(
+        SYMBOLS.map(async (sym) => {
+          const bars = await alpacaAPI.getBars(sym);
+          const last = bars?.[bars.length - 1];
+          const prev = bars?.[bars.length - 2];
+          if (!last || !prev) {
+            return { id: sym, symbol: sym, name: sym, price: null, change: 0 };
+          }
+          const changePct = ((last.c - prev.c) / prev.c) * 100;
+          return { id: sym, symbol: sym, name: sym, price: last.c, change: changePct };
+        })
+      );
+      data.sort((a, b) => Math.abs(b.change) - Math.abs(a.change));
       setStocks(data);
     } catch (err) {
       setError('Failed to fetch trending stocks. Please try again.');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { stockAPI } from '../services/api';
+import { alpacaAPI } from '../services/alpaca';
 import StockCard from '../components/StockCard';
 import SearchBar from '../components/SearchBar';
 import Loading from '../components/Loading';
@@ -16,11 +16,24 @@ const StockList = () => {
     fetchStocks();
   }, []);
 
+  const SYMBOLS = ['AAPL', 'MSFT', 'TSLA', 'NVDA', 'GOOGL', 'AMZN', 'META', 'JPM'];
+
   const fetchStocks = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await stockAPI.getAllStocks();
+      const data = await Promise.all(
+        SYMBOLS.map(async (sym) => {
+          const bars = await alpacaAPI.getBars(sym);
+          const last = bars?.[bars.length - 1];
+          const prev = bars?.[bars.length - 2];
+          if (!last || !prev) {
+            return { id: sym, symbol: sym, name: sym, price: null, change: 0, marketCap: null, volume: null };
+          }
+          const changePct = ((last.c - prev.c) / prev.c) * 100;
+          return { id: sym, symbol: sym, name: sym, price: last.c, change: changePct, marketCap: null, volume: last.v };
+        })
+      );
       setStocks(data);
       setFilteredStocks(data);
     } catch (err) {
@@ -34,7 +47,8 @@ const StockList = () => {
   const handleSearch = async (symbol) => {
     try {
       setLoading(true);
-      const results = await stockAPI.searchStocks(symbol);
+      const query = symbol?.trim()?.toUpperCase();
+      const results = stocks.filter((s) => s.symbol === query);
       setSearchResults(results);
       setFilteredStocks(results);
     } catch (err) {

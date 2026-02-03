@@ -1,0 +1,20 @@
+.news-page {
+  padding: 24px;
+  background: #F8F9FA;
+}
+
+.news-page h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.news-card {
+  display: block;
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  text-decoration: none;
+  color: #1F2937;
+}
