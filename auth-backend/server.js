@@ -15,6 +15,7 @@ const ALPACA_API_SECRET = process.env.ALPACA_API_SECRET;
 const ALPACA_DATA_BASE_URL = process.env.ALPACA_DATA_BASE_URL || 'https://data.alpaca.markets';
 const NEWS_API_KEY = process.env.NEWS_API_KEY;
 const NEWS_API_BASE_URL = process.env.NEWS_API_BASE_URL || 'https://newsapi.org/v2/everything';
+const stocksRoute = require('./src/routes/stocks');
 
 const newsCache = new Map();
 const NEWS_CACHE_TTL_MS = 1000 * 60 * 5;
@@ -174,6 +175,8 @@ app.get('/api/news', async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 });
+
+app.use('/api/stocks', stocksRoute);
 
 app.listen(PORT, () => {
   console.log(`Auth backend running on port ${PORT}`);
