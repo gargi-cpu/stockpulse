@@ -63,7 +63,28 @@ async function getRSI(symbol) {
   };
 }
 
+async function getDailyPrices(symbol) {
+  const data = await fetchAlphaVantage({
+    function: 'TIME_SERIES_DAILY',
+    symbol,
+    apikey: getApiKey()
+  });
+
+  const series = data['Time Series (Daily)'];
+  if (!series) {
+    throw new Error('Invalid time series response');
+  }
+
+  const dates = Object.keys(series).slice(0, 30).reverse();
+
+  return dates.map((date) => ({
+    date,
+    close: Number(series[date]['4. close'])
+  }));
+}
+
 module.exports = {
   getPrice,
-  getRSI
+  getRSI,
+  getDailyPrices
 };

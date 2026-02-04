@@ -4,6 +4,7 @@ import { alpacaAPI } from '../services/alpaca';
 import Card from '../components/Card';
 import SectionHeader from '../components/SectionHeader';
 import NewsCard from '../components/NewsCard';
+import PriceChartCard from '../components/PriceChartCard';
 import './Dashboard.css';
 
 const indices = [
@@ -29,6 +30,8 @@ const movers = [
 const Dashboard = () => {
   const [chartBars, setChartBars] = React.useState([]);
   const [chartError, setChartError] = React.useState('');
+  const [alphaData, setAlphaData] = React.useState(null);
+  const [alphaError, setAlphaError] = React.useState('');
 
   React.useEffect(() => {
     const load = async () => {
@@ -40,6 +43,23 @@ const Dashboard = () => {
       }
     };
     load();
+  }, []);
+
+  React.useEffect(() => {
+    const loadAlpha = async () => {
+      try {
+        const baseUrl = import.meta.env.VITE_AUTH_API_BASE_URL || 'http://localhost:4000';
+        const res = await fetch(`${baseUrl}/api/stocks/AAPL`);
+        if (!res.ok) {
+          throw new Error('Alpha Vantage fetch failed');
+        }
+        const data = await res.json();
+        setAlphaData(data);
+      } catch (err) {
+        setAlphaError(err.message || 'Unable to load price chart.');
+      }
+    };
+    loadAlpha();
   }, []);
 
   return (
@@ -85,12 +105,54 @@ const Dashboard = () => {
                   <XAxis dataKey="t" hide />
                   <YAxis hide />
                   <Tooltip />
-                  <Line type="monotone" dataKey="c" stroke="#2f6f7a" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="c" stroke="#60a5fa" strokeWidth={2} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
             )}
           </div>
         </Card>
+
+        <div className="signal-grid">
+          <Card className="signal-card">
+            <div className="signal-header">
+              <div>
+                <h3>Signal Snapshot</h3>
+                <p className="muted">AAPL · RSI + momentum</p>
+              </div>
+              {alphaData && (
+                <span className={`tag ${alphaData.signal === 'BUY' ? 'positive' : alphaData.signal === 'SELL' ? 'negative' : ''}`}>
+                  {alphaData.signal}
+                </span>
+              )}
+            </div>
+            {alphaError && <p className="muted">{alphaError}</p>}
+            {alphaData && (
+              <div className="signal-metrics">
+                <div>
+                  <div className="metric-label">Price</div>
+                  <div className="metric-value">${alphaData.price?.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="metric-label">RSI (14)</div>
+                  <div className="metric-value">{alphaData.rsi?.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="metric-label">Change</div>
+                  <div className="metric-value">
+                    {alphaData.change?.toFixed(2)} ({alphaData.changePercent})
+                  </div>
+                </div>
+              </div>
+            )}
+          </Card>
+          {alphaData ? (
+            <PriceChartCard prices={alphaData.prices || []} />
+          ) : (
+            <Card className="price-chart-loading">
+              <p className="muted">Loading price chart...</p>
+            </Card>
+          )}
+        </div>
 
         <div className="bottom-grid">
           <div className="news-section">

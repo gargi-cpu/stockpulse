@@ -28,7 +28,7 @@
 }
 
 .chart-card {
-  margin-bottom: 48px;
+  margin-bottom: 32px;
   padding: 24px 24px 32px;
 }
 
@@ -60,6 +60,51 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.signal-grid {
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.signal-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.signal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.signal-metrics {
+  display: grid;
+  gap: 16px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.price-chart-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
 }
 
 .bottom-grid {
@@ -103,6 +148,10 @@
 @media (max-width: 1100px) {
   .indices-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .signal-grid {
+    grid-template-columns: 1fr;
   }
 
   .bottom-grid {

@@ -1,5 +1,5 @@
 ﻿const express = require('express');
-const { getPrice, getRSI } = require('../services/alphaVantage');
+const { getPrice, getRSI, getDailyPrices } = require('../services/alphaVantage');
 
 const router = express.Router();
 
@@ -7,9 +7,10 @@ router.get('/:symbol', async (req, res) => {
   try {
     const symbol = req.params.symbol.toUpperCase();
 
-    const [price, rsi] = await Promise.all([
+    const [price, rsi, prices] = await Promise.all([
       getPrice(symbol),
-      getRSI(symbol)
+      getRSI(symbol),
+      getDailyPrices(symbol)
     ]);
 
     let signal = 'HOLD';
@@ -23,6 +24,7 @@ router.get('/:symbol', async (req, res) => {
       changePercent: price.changePercent,
       rsi: rsi.rsi,
       signal,
+      prices,
       updatedAt: new Date().toISOString()
     });
   } catch (err) {
