@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import SearchInput from './SearchInput';
+import logo from '../assets/logo/stockpulse-logo.png';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -9,7 +10,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-inner container">
         <Link to="/home" className="navbar-logo">
-          <span className="logo-mark">SP</span>
+          <img src={logo} alt="StockPulse logo" className="logo-image" />
           <span className="logo-text">StockPulse</span>
         </Link>
 

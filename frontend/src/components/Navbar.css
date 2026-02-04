@@ -25,17 +25,10 @@
   font-size: 18px;
 }
 
-.logo-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: var(--color-surface-alt-2);
-  color: var(--color-secondary);
-  font-weight: 700;
-  font-size: 14px;
+.logo-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .navbar-center {
