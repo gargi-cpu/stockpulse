@@ -19,10 +19,10 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8f9fb;
+  background: #0b0f1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d0d5dd;
+  background: #2a3447;
   border-radius: 999px;
 }

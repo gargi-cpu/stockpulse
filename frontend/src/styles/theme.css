@@ -1,23 +1,23 @@
 ﻿:root {
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f5f9f7;
-  --color-surface-alt-2: #f3f7f9;
-  --color-accent: #2fbf71;
-  --color-accent-strong: #249a5d;
-  --color-secondary: #2f6f7a;
-  --color-text: #101828;
-  --color-text-muted: #667085;
-  --color-border: #eaecf0;
-  --color-border-strong: #d0d5dd;
-  --shadow-soft: 0 12px 30px rgba(16, 24, 40, 0.08);
-  --shadow-card: 0 8px 20px rgba(16, 24, 40, 0.06);
-  --radius-lg: 20px;
-  --radius-md: 14px;
+  --color-bg: #0b0f1a;
+  --color-surface: #111827;
+  --color-surface-alt: #0f172a;
+  --color-surface-alt-2: #141c2e;
+  --color-accent: #3b82f6;
+  --color-accent-strong: #2563eb;
+  --color-secondary: #7c8db5;
+  --color-text: #e5e7eb;
+  --color-text-muted: #9ca3af;
+  --color-border: #1f2937;
+  --color-border-strong: #2a3447;
+  --shadow-soft: none;
+  --shadow-card: none;
+  --radius-lg: 18px;
+  --radius-md: 12px;
   --radius-sm: 10px;
   --page-max: 1200px;
-  --section-gap: 80px;
-  --section-gap-sm: 48px;
+  --section-gap: 88px;
+  --section-gap-sm: 56px;
 }
 
 .container {
@@ -68,7 +68,7 @@
 
 .card.soft {
   background: var(--color-surface-alt);
-  border-color: transparent;
+  border-color: var(--color-border);
   box-shadow: none;
 }
 
@@ -105,13 +105,13 @@
 }
 
 .btn-outline {
-  background: #ffffff;
+  background: transparent;
   border-color: var(--color-border-strong);
   color: var(--color-text);
 }
 
 .btn-outline:hover {
-  border-color: var(--color-text);
+  border-color: var(--color-accent);
 }
 
 .input {
@@ -120,15 +120,15 @@
   padding: 10px 16px;
   font-size: 14px;
   color: var(--color-text);
-  background: #ffffff;
+  background: #0f172a;
   width: 100%;
   outline: none;
   transition: border 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input:focus {
-  border-color: var(--color-secondary);
-  box-shadow: 0 0 0 4px rgba(47, 111, 122, 0.12);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
 }
 
 .tag {
@@ -139,18 +139,18 @@
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  background: #f2f4f7;
+  background: #0b1220;
   color: var(--color-text-muted);
 }
 
 .tag.positive {
-  background: #edfdf3;
-  color: #15803d;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
 }
 
 .tag.negative {
-  background: #fef2f2;
-  color: #b42318;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
 }
 
 .muted {
@@ -173,7 +173,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #ffffff;
+  background: #0f172a;
 }
 
 @media (max-width: 900px) {
