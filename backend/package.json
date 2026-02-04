@@ -1,7 +1,7 @@
 {
-  "name": "auth-backend",
+  "name": "stockpulse-backend",
   "version": "1.0.0",
-  "description": "Authentication backend for StockPulse (email identity tracking)",
+  "description": "StockPulse backend API (auth, stocks, news, market data)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

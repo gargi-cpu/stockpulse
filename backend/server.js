@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const User = require('./models/User');
+const User = require('./src/models/User');
 
 const app = express();
 const PORT = process.env.PORT || 4000;

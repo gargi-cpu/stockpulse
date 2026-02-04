@@ -48,7 +48,10 @@ const Dashboard = () => {
   React.useEffect(() => {
     const loadAlpha = async () => {
       try {
-        const baseUrl = import.meta.env.VITE_AUTH_API_BASE_URL || 'http://localhost:4000';
+        const baseUrl =
+          import.meta.env.VITE_API_BASE_URL ||
+          import.meta.env.VITE_AUTH_API_BASE_URL ||
+          'http://localhost:4000';
         const res = await fetch(`${baseUrl}/api/stocks/AAPL`);
         if (!res.ok) {
           throw new Error('Alpha Vantage fetch failed');
