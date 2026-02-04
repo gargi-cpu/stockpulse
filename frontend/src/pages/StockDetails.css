@@ -1,174 +1,89 @@
-.stock-details-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
-  min-height: calc(100vh - 80px);
+﻿.stock-details-page {
+  background: var(--color-bg);
 }
 
-.back-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: #f8f9fa;
-  color: #667eea;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  transition: all 0.3s ease;
+.stock-details-top {
+  margin-bottom: 16px;
 }
 
-.back-button:hover {
-  background: #667eea;
-  color: white;
-  transform: translateX(-5px);
+.stock-summary {
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
-.stock-details-container {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.stock-header-section {
+.summary-card {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 2px solid #f0f0f0;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.stock-title h1 {
-  font-size: 3rem;
-  color: #667eea;
-  margin-bottom: 0.5rem;
+.summary-name {
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
-.company-name {
-  font-size: 1.3rem;
-  color: #666;
-  margin: 0;
-}
-
-.price-change-badge {
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  font-size: 1.2rem;
+.summary-price {
+  font-size: 32px;
   font-weight: 700;
+  color: var(--color-text);
 }
 
-.price-change-badge.positive {
-  background: #d4edda;
-  color: #28a745;
+.chart-card {
+  padding: 24px;
 }
 
-.price-change-badge.negative {
-  background: #f8d7da;
-  color: #dc3545;
+.chart-header {
+  margin-bottom: 16px;
 }
 
-.price-section {
-  text-align: center;
-  margin-bottom: 3rem;
+.chart-header h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
 }
 
-.current-price {
-  font-size: 4rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.price-label {
-  font-size: 1.2rem;
-  color: #999;
+.chart-wrap {
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.stock-chart {
-  margin-top: 2rem;
-  background: #141a30;
-  border: 1px solid #242b4a;
-  border-radius: 12px;
-  padding: 1rem;
-  color: #e5e7f2;
-}
-
-.stock-chart .chart-wrap {
-  height: 180px;
-  margin-top: 0.75rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 .detail-card {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.detail-card:hover {
-  background: #e9ecef;
-  transform: translateY(-3px);
-}
-
-.detail-icon {
-  font-size: 2.5rem;
-}
-
-.detail-content {
-  flex: 1;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .detail-label {
-  font-size: 0.9rem;
-  color: #999;
-  margin-bottom: 0.25rem;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .detail-value {
-  font-size: 1.3rem;
+  font-size: 18px;
   font-weight: 600;
-  color: #333;
 }
 
-.error-container {
-  text-align: center;
-  padding: 4rem 2rem;
-}
-
-.error-container h2 {
-  color: #dc3545;
-  margin-bottom: 1rem;
-}
-
-.error-container p {
-  color: #666;
-  margin-bottom: 2rem;
-}
-
-@media (max-width: 768px) {
-  .stock-header-section {
-    flex-direction: column;
-    gap: 1rem;
+@media (max-width: 1000px) {
+  .stock-summary {
+    grid-template-columns: 1fr;
   }
-  
-  .stock-title h1 {
-    font-size: 2rem;
+
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .current-price {
-    font-size: 2.5rem;
-  }
-  
+}
+
+@media (max-width: 600px) {
   .details-grid {
     grid-template-columns: 1fr;
   }

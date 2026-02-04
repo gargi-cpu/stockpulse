@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
@@ -6,6 +6,7 @@ import StockList from './pages/StockList';
 import TrendingStocks from './pages/TrendingStocks';
 import StockDetails from './pages/StockDetails';
 import News from './pages/News';
+import Auth from './pages/Auth';
 import AppLayout from './layouts/AppLayout';
 import './App.css';
 
@@ -62,7 +63,22 @@ function App() {
               </AppLayout>
             }
           />
-          <Route path="*" element={<Home />} />
+          <Route
+            path="/auth"
+            element={
+              <AppLayout>
+                <Auth />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <AppLayout>
+                <Home />
+              </AppLayout>
+            }
+          />
         </Routes>
       </div>
     </Router>

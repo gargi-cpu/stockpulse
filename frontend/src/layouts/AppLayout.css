@@ -1,5 +1,5 @@
 .app-main {
-  min-height: calc(100vh - 64px);
-  background: #F8F9FA;
-  padding-top: 64px;
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding-top: 88px;
 }

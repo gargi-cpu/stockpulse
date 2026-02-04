@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { alpacaAPI } from '../services/alpaca';
 import StockCard from '../components/StockCard';
-import SearchBar from '../components/SearchBar';
-import Loading from '../components/Loading';
+import SearchInput from '../components/SearchInput';
+import SectionHeader from '../components/SectionHeader';
+import Button from '../components/Button';
 import './StockList.css';
+
+const SYMBOLS = ['AAPL', 'MSFT', 'TSLA', 'NVDA', 'GOOGL', 'AMZN', 'META', 'JPM'];
+const SECTORS = {
+  AAPL: 'Consumer Tech',
+  MSFT: 'Enterprise',
+  TSLA: 'Auto',
+  NVDA: 'Semiconductors',
+  GOOGL: 'Internet',
+  AMZN: 'E-commerce',
+  META: 'Social',
+  JPM: 'Banking',
+};
 
 const StockList = () => {
   const [stocks, setStocks] = useState([]);
@@ -16,8 +29,6 @@ const StockList = () => {
     fetchStocks();
   }, []);
 
-  const SYMBOLS = ['AAPL', 'MSFT', 'TSLA', 'NVDA', 'GOOGL', 'AMZN', 'META', 'JPM'];
-
   const fetchStocks = async () => {
     try {
       setLoading(true);
@@ -28,36 +39,26 @@ const StockList = () => {
           const last = bars?.[bars.length - 1];
           const prev = bars?.[bars.length - 2];
           if (!last || !prev) {
-            return { id: sym, symbol: sym, name: sym, price: null, change: 0, marketCap: null, volume: null };
+            return { id: sym, symbol: sym, name: sym, price: null, change: 0, sector: SECTORS[sym] };
           }
           const changePct = ((last.c - prev.c) / prev.c) * 100;
-          return { id: sym, symbol: sym, name: sym, price: last.c, change: changePct, marketCap: null, volume: last.v };
+          return { id: sym, symbol: sym, name: sym, price: last.c, change: changePct, sector: SECTORS[sym] };
         })
       );
       setStocks(data);
       setFilteredStocks(data);
     } catch (err) {
       setError('Failed to fetch stocks. The server might be waking up...');
-      console.error('Error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSearch = async (symbol) => {
-    try {
-      setLoading(true);
-      const query = symbol?.trim()?.toUpperCase();
-      const results = stocks.filter((s) => s.symbol === query);
-      setSearchResults(results);
-      setFilteredStocks(results);
-    } catch (err) {
-      setError(`No stocks found for symbol: ${symbol}`);
-      setSearchResults([]);
-      setFilteredStocks([]);
-    } finally {
-      setLoading(false);
-    }
+  const handleSearch = (symbol) => {
+    const query = symbol?.trim()?.toUpperCase();
+    const results = stocks.filter((s) => s.symbol === query);
+    setSearchResults(results);
+    setFilteredStocks(results);
   };
 
   const clearSearch = () => {
@@ -66,45 +67,45 @@ const StockList = () => {
     setError(null);
   };
 
-  if (loading) {
-    return <Loading message="Loading stocks..." />;
-  }
-
   return (
-    <div className="stock-list-page">
-      <div className="page-header">
-        <h1>All Stocks</h1>
-        <p>Browse and search through our comprehensive stock database</p>
-      </div>
+    <div className="stock-list-page section">
+      <div className="container">
+        <SectionHeader
+          eyebrow="Stocks"
+          title="Explore stocks quickly"
+          subtitle="Browse a clean list of popular stocks with sector tags and price changes."
+          action={<Button variant="outline" onClick={fetchStocks}>Refresh</Button>}
+        />
 
-      <SearchBar onSearch={handleSearch} />
-
-      {searchResults && (
-        <div className="search-info">
-          <p>Search results for your query</p>
-          <button onClick={clearSearch} className="clear-search-btn">
-            Clear Search
-          </button>
+        <div className="stock-search">
+          <SearchInput placeholder="Search by symbol" onSubmit={handleSearch} />
+          {searchResults && (
+            <Button variant="outline" onClick={clearSearch}>Clear</Button>
+          )}
         </div>
-      )}
 
-      {error && (
-        <div className="error-message">
-          <p>{error}</p>
-          <button onClick={fetchStocks} className="retry-btn">
-            Retry
-          </button>
-        </div>
-      )}
+        {error && (
+          <div className="message-card">
+            <p className="muted">{error}</p>
+            <Button variant="outline" onClick={fetchStocks}>Retry</Button>
+          </div>
+        )}
 
-      <div className="stocks-grid">
-        {filteredStocks.length > 0 ? (
-          filteredStocks.map((stock) => (
-            <StockCard key={stock.id} stock={stock} />
-          ))
+        {loading ? (
+          <div className="message-card">
+            <p className="muted">Loading stocks...</p>
+          </div>
         ) : (
-          <div className="no-stocks">
-            <p>No stocks found</p>
+          <div className="stocks-grid">
+            {filteredStocks.length > 0 ? (
+              filteredStocks.map((stock) => (
+                <StockCard key={stock.id} stock={stock} />
+              ))
+            ) : (
+              <div className="message-card">
+                <p className="muted">No stocks found.</p>
+              </div>
+            )}
           </div>
         )}
       </div>

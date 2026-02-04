@@ -1,5 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import { newsAPI } from '../services/news';
+import SectionHeader from '../components/SectionHeader';
+import NewsCard from '../components/NewsCard';
 import './News.css';
 
 const News = () => {
@@ -19,15 +21,33 @@ const News = () => {
   }, []);
 
   return (
-    <div className="news-page">
-      <h1>Market News</h1>
-      {error && <p className="news-error">{error}</p>}
-      <div className="news-list">
-        {items.map((n, i) => (
-          <a key={`${n.title}-${i}`} href={n.url} target="_blank" rel="noreferrer" className="news-card">
-            <h3>{n.title}</h3>
-          </a>
-        ))}
+    <div className="news-page section">
+      <div className="container">
+        <SectionHeader
+          eyebrow="News"
+          title="Market news"
+          subtitle="Headlines from trusted sources, curated for quick scanning."
+        />
+
+        {error && <p className="news-error">{error}</p>}
+
+        <div className="news-list">
+          {items.map((n, i) => (
+            <a
+              key={`${n.title}-${i}`}
+              href={n.url}
+              target="_blank"
+              rel="noreferrer"
+              className="news-link"
+            >
+              <NewsCard
+                title={n.title}
+                source={n.source || 'Market'}
+                time={n.time || 'Just now'}
+              />
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );

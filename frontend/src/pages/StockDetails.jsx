@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { alpacaAPI } from '../services/alpaca';
-import { alpacaAPI } from '../services/alpaca';
+﻿import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import Loading from '../components/Loading';
+import { alpacaAPI } from '../services/alpaca';
+import Button from '../components/Button';
+import Card from '../components/Card';
+import SectionHeader from '../components/SectionHeader';
 import './StockDetails.css';
 
 const StockDetails = () => {
@@ -32,30 +33,37 @@ const StockDetails = () => {
         price: last.c,
         change: ((last.c - prev.c) / prev.c) * 100,
         volume: last.v,
-        marketCap: null
+        marketCap: null,
       });
       setBars(barsData);
     } catch (err) {
       setError('Failed to fetch stock details. Please try again.');
-      console.error('Error:', err);
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <Loading message="Loading stock details..." />;
+    return (
+      <div className="stock-details-page section">
+        <div className="container">
+          <p className="muted">Loading stock details...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error || !stock) {
     return (
-      <div className="stock-details-page">
-        <div className="error-container">
-          <h2>Stock Not Found</h2>
-          <p>{error || 'The requested stock could not be found.'}</p>
-          <Link to="/stocks" className="back-button">
-            ← Back to Stocks
-          </Link>
+      <div className="stock-details-page section">
+        <div className="container">
+          <div className="message-card">
+            <div>
+              <h3>Stock not found</h3>
+              <p className="muted">{error || 'The requested stock could not be found.'}</p>
+            </div>
+            <Button to="/markets" variant="outline">Back to Stocks</Button>
+          </div>
         </div>
       </div>
     );
@@ -65,103 +73,62 @@ const StockDetails = () => {
   const isPositive = priceChange >= 0;
 
   return (
-    <div className="stock-details-page">
-      <Link to="/stocks" className="back-button">
-        ← Back to Stocks
-      </Link>
-
-      <div className="stock-details-container">
-        <div className="stock-header-section">
-          <div className="stock-title">
-            <h1>{stock.symbol}</h1>
-            <p className="company-name">{stock.name}</p>
-          </div>
-          <div className={`price-change-badge ${isPositive ? 'positive' : 'negative'}`}>
-            {isPositive ? '▲' : '▼'} {Math.abs(priceChange).toFixed(2)}%
-          </div>
+    <div className="stock-details-page section">
+      <div className="container">
+        <div className="stock-details-top">
+          <Button to="/markets" variant="outline">Back to Stocks</Button>
         </div>
 
-        <div className="price-section">
-          <div className="current-price">
-            ${stock.price ? stock.price.toFixed(2) : 'N/A'}
-          </div>
-          <div className="price-label">Current Price</div>
-        </div>
+        <SectionHeader
+          eyebrow="Stock"
+          title={`${stock.symbol} overview`}
+          subtitle="Price history and key metrics."
+        />
 
-        <div className="stock-chart">
-          <h3>Price History (1D bars)</h3>
-          <div className="chart-wrap">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={bars}>
-                <XAxis dataKey="t" hide />
-                <YAxis hide />
-                <Tooltip />
-                <Line type="monotone" dataKey="c" stroke="#7c9cff" strokeWidth={2} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+        <div className="stock-summary">
+          <Card className="summary-card">
+            <div className="summary-name">{stock.name}</div>
+            <div className="summary-price">${stock.price ? stock.price.toFixed(2) : 'N/A'}</div>
+            <span className={`tag ${isPositive ? 'positive' : 'negative'}`}>
+              {isPositive ? '+' : '-'}
+              {Math.abs(priceChange).toFixed(2)}%
+            </span>
+          </Card>
+          <Card className="chart-card">
+            <div className="chart-header">
+              <h3>Price History</h3>
+              <p className="muted">1D bars</p>
+            </div>
+            <div className="chart-wrap">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={bars}>
+                  <XAxis dataKey="t" hide />
+                  <YAxis hide />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="c" stroke="#2f6f7a" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
         </div>
 
         <div className="details-grid">
-          <div className="detail-card">
-            <div className="detail-icon">📊</div>
-            <div className="detail-content">
-              <div className="detail-label">Volume</div>
-              <div className="detail-value">
-                {stock.volume ? stock.volume.toLocaleString() : 'N/A'}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-card">
-            <div className="detail-icon">💰</div>
-            <div className="detail-content">
-              <div className="detail-label">Market Cap</div>
-              <div className="detail-value">
-                {stock.marketCap ? `$${(stock.marketCap / 1e9).toFixed(2)}B` : 'N/A'}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-card">
-            <div className="detail-icon">📈</div>
-            <div className="detail-content">
-              <div className="detail-label">52 Week High</div>
-              <div className="detail-value">
-                {stock.high52Week ? `$${stock.high52Week.toFixed(2)}` : 'N/A'}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-card">
-            <div className="detail-icon">📉</div>
-            <div className="detail-content">
-              <div className="detail-label">52 Week Low</div>
-              <div className="detail-value">
-                {stock.low52Week ? `$${stock.low52Week.toFixed(2)}` : 'N/A'}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-card">
-            <div className="detail-icon">💵</div>
-            <div className="detail-content">
-              <div className="detail-label">Open Price</div>
-              <div className="detail-value">
-                {stock.openPrice ? `$${stock.openPrice.toFixed(2)}` : 'N/A'}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-card">
-            <div className="detail-icon">🔒</div>
-            <div className="detail-content">
-              <div className="detail-label">Previous Close</div>
-              <div className="detail-value">
-                {stock.previousClose ? `$${stock.previousClose.toFixed(2)}` : 'N/A'}
-              </div>
-            </div>
-          </div>
+          <Card className="detail-card">
+            <div className="detail-label">Volume</div>
+            <div className="detail-value">{stock.volume ? stock.volume.toLocaleString() : 'N/A'}</div>
+          </Card>
+          <Card className="detail-card">
+            <div className="detail-label">Market Cap</div>
+            <div className="detail-value">{stock.marketCap ? `$${(stock.marketCap / 1e9).toFixed(2)}B` : 'N/A'}</div>
+          </Card>
+          <Card className="detail-card">
+            <div className="detail-label">52 Week High</div>
+            <div className="detail-value">{stock.high52Week ? `$${stock.high52Week.toFixed(2)}` : 'N/A'}</div>
+          </Card>
+          <Card className="detail-card">
+            <div className="detail-label">52 Week Low</div>
+            <div className="detail-value">{stock.low52Week ? `$${stock.low52Week.toFixed(2)}` : 'N/A'}</div>
+          </Card>
         </div>
       </div>
     </div>
