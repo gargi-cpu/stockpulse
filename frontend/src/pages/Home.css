@@ -2,6 +2,24 @@
   background: var(--color-bg);
 }
 
+.home-hero {
+  position: relative;
+  background: url('../assets/backgrounds/hero-bg.jpg') center/cover no-repeat;
+  color: #f8fafc;
+}
+
+.home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 10, 20, 0.65);
+}
+
+.home-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
 .hero-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -12,12 +30,12 @@
 .hero-text h1 {
   font-size: clamp(32px, 4vw, 52px);
   margin: 16px 0 16px;
-  color: var(--color-text);
+  color: #f8fafc;
   line-height: 1.1;
 }
 
 .hero-text p {
-  color: var(--color-text-muted);
+  color: rgba(248, 250, 252, 0.78);
   max-width: 520px;
   margin-bottom: 24px;
 }
@@ -30,6 +48,9 @@
 .hero-card {
   width: 100%;
   max-width: 420px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.35);
 }
 
 .hero-card-header {
@@ -55,12 +76,13 @@
 .hero-card-grid h3 {
   margin: 4px 0 0;
   font-size: 18px;
-  color: var(--color-text);
+  color: #f8fafc;
 }
 
 .hero-card-grid p {
   margin: 0;
   font-size: 12px;
+  color: rgba(248, 250, 252, 0.7);
 }
 
 .feature-stack {
